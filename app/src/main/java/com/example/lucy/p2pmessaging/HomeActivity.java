@@ -119,6 +119,10 @@ public class HomeActivity extends AppCompatActivity {
 
     public void findContact(View view){
         if(numberSearch.getText().toString().isEmpty()) return;
+        if(numberSearch.getText().toString().equals(userNumber)) {
+            Toast.makeText(HomeActivity.this, "You cannot be your own friend", Toast.LENGTH_LONG).show();
+            return;
+        }
         final ProgressDialog dialog = ProgressDialog.show(HomeActivity.this, "", "Finding user...", true);
         //number - provide users number to find
         String url ="http://p2pmessenger.azurewebsites.net/api/users/findbynumber?number=" + numberSearch.getText().toString().trim();

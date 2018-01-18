@@ -72,8 +72,10 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 return params;
             }
 
+
         };
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest, "add friend");
+       // finish();
     }
 
     public void startConversation(View view) {
