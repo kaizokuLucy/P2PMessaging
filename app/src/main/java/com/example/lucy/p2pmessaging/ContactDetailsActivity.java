@@ -76,7 +76,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
     public void startConversation(View view) {
 
-        if(contact.status.equals("1")) {
+        if(!contact.status.equals("1")) {
             Toast.makeText(ContactDetailsActivity.this, contact.first_name + " is not online", Toast.LENGTH_LONG).show();
             finish();
             //Intent intent = new Intent(ContactDetailsActivity.this, HomeActivity.class);
