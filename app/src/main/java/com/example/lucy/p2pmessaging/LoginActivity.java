@@ -26,6 +26,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     EditText number;
     EditText password;
+    private String UserIP;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,8 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.login_passwordText);
 
         WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        Log.d("IP: ", wm.getDhcpInfo().toString().split(" ")[1]);
+        UserIP = wm.getDhcpInfo().toString().split(" ")[1];
+        //Log.d("IP: ", wm.getDhcpInfo().toString().split(" ")[1]);
 
     }
 
@@ -86,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 //                params.put("number", number.getText().toString());
         params.put("number", number.getText().toString());
         params.put("password", password.getText().toString());
-
+        params.put("ip", UserIP);
         return params;
     }
 

@@ -1,6 +1,7 @@
 package com.example.lucy.p2pmessaging;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.lucy.p2pmessaging.Models.Contact;
 import com.example.lucy.p2pmessaging.Networking.AppSingleton;
+import com.example.lucy.p2pmessaging.TCPCommunication.TcpClient;
+import com.example.lucy.p2pmessaging.TCPCommunication.TcpClientThread;
+import com.example.lucy.p2pmessaging.TCPCommunication.TcpServer;
+import com.example.lucy.p2pmessaging.TCPCommunication.TcpServerThread;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +67,12 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new ContactAdapter(this, R.layout.listview_item_row, contacts_data);
         contactList.setAdapter(adapter);
         updateContacts(null);
+
+        //start tcp server
+        TcpServer server = new TcpServer(this);
+
+        Runnable serverThread = new TcpServerThread(server);
+        new Thread(serverThread).start();
 
 
     }
@@ -139,5 +150,49 @@ public class HomeActivity extends AppCompatActivity {
         );
 
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(getRequest, "find user");
+    }
+
+    public void createChat(){
+        //Intent intent = new Intent(this, ChatActivity.class);
+        //startActivity(intent);
+    }
+
+    public void LogOff() {
+
+        String url = "http://p2pmessenger.azurewebsites.net/api/Users/LogOff";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String response = error.getMessage();
+                Toast.makeText(HomeActivity.this, response, Toast.LENGTH_LONG).show();
+
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String, String> params = new HashMap<>();
+                params.put("number", "0911917843");
+                return params;
+            }
+        };
+
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(request, "Log off");
+    }
+
+
+    @Override
+    public void onDestroy()
+    {
+        LogOff();
+        Toast.makeText(HomeActivity.this, "You are logged off", Toast.LENGTH_LONG).show();
+        super.onDestroy();
     }
 }
