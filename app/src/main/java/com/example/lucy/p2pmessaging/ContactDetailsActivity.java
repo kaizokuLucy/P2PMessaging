@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -15,6 +17,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.lucy.p2pmessaging.Models.Contact;
 import com.example.lucy.p2pmessaging.Networking.AppSingleton;
 import com.example.lucy.p2pmessaging.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,9 +62,49 @@ public class ContactDetailsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-                Toast.makeText(ContactDetailsActivity.this, "Error" + error.networkResponse.toString(), Toast.LENGTH_LONG).show();
+               // Toast.makeText(ContactDetailsActivity.this, "Error" + error.networkResponse.toString(), Toast.LENGTH_LONG).show();
 
+                //Toast.makeText(ContactDetailsActivity.this, "ERROR\n" + error.networkResponse.toString(), Toast.LENGTH_LONG).show();
+
+                String json = null;
+                NetworkResponse response = error.networkResponse;
+                if (response != null && response.data != null) {
+
+                    switch (response.statusCode) {
+                        case 400:
+                            json = new String(response.data);
+                            json = trimMessage(json, "Message");
+                            Toast.makeText(ContactDetailsActivity.this, json, Toast.LENGTH_LONG).show();
+                            if (json != null) displayMessage(json);
+                            // Toast.makeText(ContactDetailsActivity.this, "bla" + json, Toast.LENGTH_LONG).show();
+                            break;
+                        default:
+                            Log.d("ERROR", "" + response.statusCode);
+                            break;
+                    }
+                    dialog.dismiss();
+                }
             }
+
+            public String trimMessage(String json, String key) {
+                String trimmedString = null;
+
+                try {
+                    JSONObject obj = new JSONObject(json);
+                    trimmedString = obj.getString(key);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                return trimmedString;
+            }
+
+            public void displayMessage(String toastString) {
+                Toast.makeText(ContactDetailsActivity.this, toastString, Toast.LENGTH_LONG).show();
+            }
+
+
 
         }) {
 
@@ -77,7 +122,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest, "add friend");
         /** Intent intent = new Intent(ContactDetailsActivity.this, HomeActivity.class);
         startActivity(intent);**/
-        this.onBackPressed();
+       // this.onBackPressed();
     }
 
     public void startConversation(View view) {
