@@ -43,7 +43,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.18"
-            android:background="@android:drawable/ic_menu_send"/>
+            android:background="@android:drawable/ic_menu_send"
+            android:onClick=""/>
     </LinearLayout>
 </LinearLayout>
 
