@@ -75,7 +75,9 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
         };
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest, "add friend");
-       // finish();
+        /** Intent intent = new Intent(ContactDetailsActivity.this, HomeActivity.class);
+        startActivity(intent);**/
+        this.onBackPressed();
     }
 
     public void startConversation(View view) {

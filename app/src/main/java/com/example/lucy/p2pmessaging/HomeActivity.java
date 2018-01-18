@@ -202,4 +202,10 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(HomeActivity.this, "You are logged off", Toast.LENGTH_LONG).show();
         super.onDestroy();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+       // this.updateContacts(null);
+    }
 }
