@@ -42,6 +42,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         contact = (Contact) getIntent().getSerializableExtra("Contact");
         userNumber = (String) getIntent().getSerializableExtra("UserNumber");
 
+
         nameSurname.setText(contact.first_name + " " + contact.last_name);
         number.setText(contact.number);
     }
@@ -134,6 +135,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
             //startActivity(intent);
         } else {
             Intent intent = new Intent(ContactDetailsActivity.this, ChatActivity.class);
+            intent.putExtra("Contact", contact);
             startActivity(intent);
         }
 
