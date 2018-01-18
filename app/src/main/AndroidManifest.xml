@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,9 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"></activity>
-        <activity android:name=".ContactDetailsActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".ContactDetailsActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>
