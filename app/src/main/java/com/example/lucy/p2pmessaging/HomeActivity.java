@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private List<Contact> contacts_data;
     private ContactAdapter adapter;
     private EditText numberSearch;
+    private String userNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         numberSearch = (EditText) findViewById(R.id.editText2);
+        userNumber = (String) getIntent().getSerializableExtra("UserNumber");
 
         contactList = (ListView)findViewById(R.id.contactsListView);
         contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
     public void updateContacts(View view){
         final ProgressDialog dialog = ProgressDialog.show(HomeActivity.this, "", "Refreshing...", true);
         //number - provide users number to find his friends
-        String url ="http://p2pmessenger.azurewebsites.net/api/users/friends?number=849845";
+        String url ="http://p2pmessenger.azurewebsites.net/api/users/friends?number=" + userNumber;
 
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>()
@@ -92,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
                         for (int i=0; i < response.length(); i++) {
                             try {
                                 JSONObject obj = response.getJSONObject(i);
-                                contacts_data.add(new Contact(obj.getString("first_name"), obj.getString("last_name"), obj.getString("number"), obj.getString("status")));
+                                contacts_data.add(new Contact(obj.getString("first_name"), obj.getString("last_name"), obj.getString("number"), obj.getString("ip"), obj.getString("status")));
                             } catch (JSONException e) {
                                 Toast.makeText(HomeActivity.this, "Serialization error", Toast.LENGTH_LONG).show();
                             }
@@ -129,9 +131,10 @@ public class HomeActivity extends AppCompatActivity {
                         //deserialize
                         dialog.dismiss();
                         try {
-                            Contact contact = new Contact(response.getString("first_name"), response.getString("last_name"), response.getString("number"), response.getString("status"));
+                            Contact contact = new Contact(response.getString("first_name"), response.getString("last_name"), response.getString("number"), response.getString("ip"), response.getString("status"));
                             Intent intent = new Intent(HomeActivity.this, ContactDetailsActivity.class);
                             intent.putExtra("Contact", contact);
+                            intent.putExtra("UserNumber", userNumber);
                             startActivity(intent);
                         } catch (JSONException e) {
                             Toast.makeText(HomeActivity.this, "Serialization error", Toast.LENGTH_LONG).show();

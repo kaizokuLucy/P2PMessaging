@@ -24,6 +24,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
     TextView nameSurname;
     TextView number;
     Contact contact;
+    private String userNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         number = (TextView)findViewById(R.id.brojKontakta);
 
         contact = (Contact) getIntent().getSerializableExtra("Contact");
+        userNumber = (String) getIntent().getSerializableExtra("UserNumber");
 
         nameSurname.setText(contact.first_name + " " + contact.last_name);
         number.setText(contact.number);
@@ -64,7 +66,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 //number of current user on this device
-                params.put("user_number", "849845");
+                params.put("user_number", userNumber);
                 //friend number
                 params.put("friend_number", contact.number);
                 return params;

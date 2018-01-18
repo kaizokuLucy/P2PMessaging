@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         dialog.dismiss();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.putExtra("UserNumber", number.getText().toString());
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {

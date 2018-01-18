@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.lucy.p2pmessaging.ChatActivity;
 import com.example.lucy.p2pmessaging.HomeActivity;
 
 import java.io.BufferedReader;
