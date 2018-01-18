@@ -1,6 +1,7 @@
 package com.example.lucy.p2pmessaging;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -71,5 +72,19 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
         };
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest, "add friend");
+    }
+
+    public void startConversation(View view) {
+
+        if(contact.status.equals("1")) {
+            Toast.makeText(ContactDetailsActivity.this, contact.first_name + " is not online", Toast.LENGTH_LONG).show();
+            finish();
+            //Intent intent = new Intent(ContactDetailsActivity.this, HomeActivity.class);
+            //startActivity(intent);
+        } else {
+            Intent intent = new Intent(ContactDetailsActivity.this, ChatActivity.class);
+            startActivity(intent);
+        }
+
     }
 }
