@@ -8,15 +8,15 @@ import java.io.Serializable;
 
 public class Contact implements Serializable {
 
-    public String first_name;
-    public String last_name;
-    public String number;
-    public String ip;
-    public String status;
+    private String firstName;
+    private String lastName;
+    private String number;
+    private String ip;
+    private String status;
 
     public Contact(String first_name, String last_name, String number, String ip, String status){
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = first_name;
+        this.lastName = last_name;
         this.number = number;
         this.ip = ip;
         this.status = status;
@@ -24,5 +24,25 @@ public class Contact implements Serializable {
 
     public Contact(){
         super();
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

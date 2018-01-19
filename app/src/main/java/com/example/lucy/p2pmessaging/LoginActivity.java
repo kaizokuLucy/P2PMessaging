@@ -75,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "I got " + response.statusCode, Toast.LENGTH_LONG).show();
                             break;
                     }
-                    dialog.dismiss();
                 }
+                dialog.dismiss();
             }
         });
 

@@ -26,9 +26,9 @@ import java.util.Map;
 
 public class ContactDetailsActivity extends AppCompatActivity {
 
-    TextView nameSurname;
-    TextView number;
-    Contact contact;
+    private TextView nameSurname;
+    private TextView number;
+    private Contact contact;
     private String userNumber;
 
     @Override
@@ -36,21 +36,20 @@ public class ContactDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details);
 
-        nameSurname = (TextView)findViewById(R.id.imePrezime);
-        number = (TextView)findViewById(R.id.brojKontakta);
+        nameSurname = (TextView) findViewById(R.id.imePrezime);
+        number = (TextView) findViewById(R.id.brojKontakta);
 
         contact = (Contact) getIntent().getSerializableExtra("Contact");
         userNumber = (String) getIntent().getSerializableExtra("UserNumber");
 
-
-        nameSurname.setText(contact.first_name + " " + contact.last_name);
-        number.setText(contact.number);
+        nameSurname.setText(contact.getFirstName() + " " + contact.getLastName());
+        number.setText(contact.getNumber());
     }
 
-    public void addFriend(View view){
+    public void addFriend(View view) {
         final ProgressDialog dialog = ProgressDialog.show(ContactDetailsActivity.this, "", "Adding to friend list...", true);
 
-        String url ="http://p2pmessenger.azurewebsites.net/api/users/addfriend";
+        String url = "http://p2pmessenger.azurewebsites.net/api/users/addfriend";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -63,7 +62,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-               // Toast.makeText(ContactDetailsActivity.this, "Error" + error.networkResponse.toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(ContactDetailsActivity.this, "Error" + error.networkResponse.toString(), Toast.LENGTH_LONG).show();
 
                 //Toast.makeText(ContactDetailsActivity.this, "ERROR\n" + error.networkResponse.toString(), Toast.LENGTH_LONG).show();
 
@@ -87,7 +86,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 }
             }
 
-            public String trimMessage(String json, String key) {
+            private String trimMessage(String json, String key) {
                 String trimmedString = null;
 
                 try {
@@ -101,11 +100,9 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 return trimmedString;
             }
 
-            public void displayMessage(String toastString) {
+            private void displayMessage(String toastString) {
                 Toast.makeText(ContactDetailsActivity.this, toastString, Toast.LENGTH_LONG).show();
             }
-
-
 
         }) {
 
@@ -114,7 +111,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
                 //number of current user on this device
                 params.put("user_number", userNumber);
                 //friend number
-                params.put("friend_number", contact.number);
+                params.put("friend_number", contact.getNumber());
                 return params;
             }
 
@@ -122,22 +119,73 @@ public class ContactDetailsActivity extends AppCompatActivity {
         };
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest, "add friend");
         /** Intent intent = new Intent(ContactDetailsActivity.this, HomeActivity.class);
-        startActivity(intent);**/
-       // this.onBackPressed();
+         startActivity(intent);**/
+        // this.onBackPressed();
     }
 
     public void startConversation(View view) {
-
-        if(!contact.status.equals("1")) {
-            Toast.makeText(ContactDetailsActivity.this, contact.first_name + " is not online", Toast.LENGTH_LONG).show();
+        if (!contact.getStatus().equals("1")) {
+            Toast.makeText(ContactDetailsActivity.this, contact.getFirstName() + " is not online", Toast.LENGTH_LONG).show();
             finish();
             //Intent intent = new Intent(ContactDetailsActivity.this, HomeActivity.class);
             //startActivity(intent);
-        } else {
-            Intent intent = new Intent(ContactDetailsActivity.this, ChatActivity.class);
-            intent.putExtra("Contact", contact);
-            startActivity(intent);
         }
 
+        final Intent intent = new Intent(ContactDetailsActivity.this, ChatActivity.class);
+        intent.putExtra("Contact", contact);
+        intent.putExtra("userNumber", userNumber);
+        intent.putExtra("port","12345");
+        Log.d("Contact IP", contact.getIp());
+
+        String url = "placeholder";
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        intent.putExtra("port", response);
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//                String json = null;
+//                NetworkResponse response = error.networkResponse;
+//                if (response != null && response.data != null) {
+//
+//                    switch (response.statusCode) {
+//                        case 400:
+//                            json = new String(response.data);
+//                            json = trimMessage(json, "Message");
+//                            Toast.makeText(ContactDetailsActivity.this, json, Toast.LENGTH_LONG).show();
+//                            break;
+//                        default:
+//                            Log.d("ERROR", "" + response.statusCode);
+//                            break;
+//                    }
+//                }
+//            }
+//
+//            private String trimMessage(String json, String key) {
+//                String trimmedString = null;
+//                try {
+//                    JSONObject obj = new JSONObject(json);
+//                    trimmedString = obj.getString(key);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    return null;
+//                }
+//                return trimmedString;
+//            }
+//        }) {
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("contactNumber", contact.getNumber());
+//
+//                return params;
+//            }
+//        };
+//
+//        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest, "begin_chat");
+        startActivity(intent);
     }
 }

@@ -53,8 +53,8 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         }
 
         Contact contact = data.get(position);
-        holder.contactName.setText(contact.first_name);
-        if(contact.status.endsWith("1")){
+        holder.contactName.setText(contact.getFirstName());
+        if(contact.getStatus().endsWith("1")){
             holder.contactStatus.setImageResource(android.R.drawable.presence_online);
         }else{
             holder.contactStatus.setImageResource(android.R.drawable.presence_invisible);

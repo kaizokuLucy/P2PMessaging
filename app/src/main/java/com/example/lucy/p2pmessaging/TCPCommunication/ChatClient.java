@@ -38,12 +38,9 @@ public class ChatClient {
         }
     }
 
-    public void sendMessage(String msg) {
-        try {
-            outToClient.writeBytes(msg);
-            outToClient.flush();
-        } catch (IOException e) {
-            Log.e("SEND EXC", e.getMessage());
-        }
+    public void sendMessage(String msg) throws IOException {
+        outToClient.writeBytes(msg);
+        outToClient.flush();
+        Log.d("MSG", "successfully sent");
     }
 }
